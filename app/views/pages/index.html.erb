@@ -1,0 +1,62 @@
+<div class="m-4">
+  <div class="flex justify-between items-center">
+    <%= link_to root_path(offset: @offset.to_i - 1), class: "h-min bg-red-500 text-white p-2 rounded hover:bg-red-600 flex items-center" do %>
+      <i class="fa-solid fa-arrow-left"></i>
+    <% end %>
+    <h1 class="font-bold text-center m-4 text-2xl"><%= @presenter.day.strftime("%A, %B %d, %Y") %></h1>
+    <%= link_to root_path(offset: @offset.to_i + 1), class: "h-min bg-red-500 text-white p-2 rounded hover:bg-red-600 flex items-center" do %>
+      <i class="fa-solid fa-arrow-right"></i>
+    <% end %>
+  </div>
+
+  <div class="grid grid-cols-7 gap-4 bg-red-500 p-4 font-bold border-b border-black">
+    <div>Repository</div>
+    <div>Ticket</div>
+    <div>Start Time</div>
+    <div>End Time</div>
+    <div>Description</div>
+    <div>Points</div>
+    <div>Actions</div>
+  </div>
+
+  <% @presenter.entries.each do |entry| %>
+    <%= render "entry_row", entry:, readonly: @presenter.readonly? %>
+  <% end %>
+
+  <%= render "entry_row", entry: Entry.new, readonly: @presenter.readonly? %>
+
+  <div class="grid grid-cols-2 gap-4 mt-8">
+    <div>
+      <h2 class="font-bold text-center m-4 text-xl">Ticket times</h2>
+      <%= render "ticket_times", presenter: @presenter %>
+    </div>
+    <div class="relative">
+      <h2 class="font-bold text-center m-4 text-xl">Slack message</h2>
+      <textarea id="slackMessage" class="w-full font-mono bg-gray-100 p-4" readonly><%= @presenter.slack_message %></textarea>
+      <button class="absolute right-0 top-0 mt-4 bg-orange-500 text-white p-2 rounded hover:bg-orange-600 flex items-center" onclick="copySlackMessage()">
+        <i class="fa-solid fa-copy"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+function adjustTextareaHeight() {
+  const textarea = document.getElementById("slackMessage");
+  textarea.style.height = 'auto';
+  textarea.style.height = textarea.scrollHeight + 'px';
+}
+
+function copySlackMessage() {
+  const textarea = document.getElementById("slackMessage");
+  textarea.select();
+  textarea.setSelectionRange(0, 99999);
+  navigator.clipboard.writeText(textarea.value);
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  adjustTextareaHeight()
+  // Update every second, I'm too lazy to fix the Turbo issue
+  setInterval(() => { adjustTextareaHeight() }, 1000);
+});
+</script>

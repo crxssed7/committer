@@ -1,0 +1,41 @@
+<%= form_with(model: entry, class: "grid grid-cols-7 gap-4 items-center border-b border-black p-4 #{entry.persisted? ? "" : "bg-gray-200"}") do |form| %>
+  <div>
+    <%= form.collection_select :repository_id, Repository.order(:name), :id, :name, {include_blank: true}, class: "border rounded w-full p-1 bg-white", disabled: readonly %>
+  </div>
+  <div>
+    <%= form.number_field :ticket_number, class: "border rounded w-full p-1", readonly: %>
+  </div>
+  <div>
+    <%= form.time_field :start_time,
+            value: entry.start_time&.strftime("%H:%M"),
+            class: "border rounded w-full p-1",
+            readonly: %>
+  </div>
+  <div>
+    <%= form.time_field :end_time,
+            value: entry.end_time&.strftime("%H:%M"),
+            class: "border rounded w-full p-1",
+            readonly: %>
+  </div>
+  <div>
+    <%= form.text_field :description, class: "border rounded w-full p-1", readonly: %>
+  </div>
+  <div><%= entry.points %></div>
+  <div class="flex gap-1">
+    <% if !readonly %>
+      <%= button_tag type: "submit", class: "bg-green-500 text-white p-2 rounded hover:bg-green-600 flex items-center" do %>
+        <i class="fa-solid fa-save"></i>
+      <% end %>
+    <% end %>
+    <% if entry.persisted? && !readonly %>
+      <%= link_to entry_path(entry), class: "bg-red-500 text-white p-2 rounded hover:bg-red-600 flex items-center", data: {turbo_method: :delete} do %>
+        <i class="fa-solid fa-trash"></i>
+      <% end %>
+    <% end %>
+    <% if entry.ticket_url %>
+      <%= link_to entry.ticket_url, class: "bg-blue-500 text-white p-2 rounded hover:bg-blue-600 flex items-center" do %>
+        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

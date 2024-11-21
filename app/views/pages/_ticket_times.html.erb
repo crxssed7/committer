@@ -1,0 +1,20 @@
+<table class="w-full">
+  <thead class="bg-red-500 border-b border-black text-left">
+    <tr>
+      <th class="p-4">Ticket</th>
+      <th class="p-4">Points</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% presenter.ticket_times.each_pair do |ticket, points| %>
+      <tr class="border-b border-black">
+        <td class="p-4"><%= ticket %></td>
+        <td class="p-4"><%= points %></td>
+      </tr>
+    <% end %>
+    <tr class="border-b border-black">
+      <td class="p-4 font-bold">Totals</td>
+      <td class="p-4 font-bold"><%= presenter.total_points %></td>
+    </tr>
+  </tbody>
+</table>
