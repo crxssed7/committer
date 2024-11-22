@@ -1,10 +1,14 @@
 <div class="m-4">
   <div class="flex justify-between items-center">
-    <%= link_to root_path(offset: @offset.to_i - 1), class: "h-min bg-red-500 text-white p-2 rounded hover:bg-red-600 flex items-center" do %>
+    <%= link_to root_path(date: @date - 1.day), class: "h-min bg-red-500 text-white p-2 rounded hover:bg-red-600 flex items-center" do %>
       <i class="fa-solid fa-arrow-left"></i>
     <% end %>
-    <h1 class="font-bold text-center m-4 text-2xl"><%= @presenter.day.strftime("%A, %B %d, %Y") %></h1>
-    <%= link_to root_path(offset: @offset.to_i + 1), class: "h-min bg-red-500 text-white p-2 rounded hover:bg-red-600 flex items-center" do %>
+    <input class="font-bold text-center m-4 text-2xl w-96 cursor-pointer focus:outline-none"
+        data-controller="date-picker"
+        data-date-picker-date-value="<%= @date.to_date.to_s %>"
+        value="<%= @presenter.day.strftime("%A, %B %d, %Y") %>"
+        readonly>
+    <%= link_to root_path(date: @date + 1.day), class: "h-min bg-red-500 text-white p-2 rounded hover:bg-red-600 flex items-center" do %>
       <i class="fa-solid fa-arrow-right"></i>
     <% end %>
   </div>

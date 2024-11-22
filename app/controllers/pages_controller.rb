@@ -1,6 +1,14 @@
 class PagesController < ApplicationController
   def index
-    @offset = params[:offset] || 0
-    @presenter = DailyEntriesPresenter.new(Time.current + @offset.to_i.days)
+    @date = try_parse_date
+    @presenter = DailyEntriesPresenter.new(@date)
+  end
+
+  private
+
+  def try_parse_date
+    Date.parse(params[:date])
+  rescue
+    Date.current
   end
 end
