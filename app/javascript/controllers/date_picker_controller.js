@@ -11,6 +11,7 @@ export default class extends Controller {
       locale: localeEn,
       selectedDates: [this.dateValue],
       position: "bottom left",
+      toggleSelected: false,
       onSelect: (selection) => {
         const newDate = this.formatDateToParamString(selection.date);
         const url = new URL(window.location.href);

@@ -27,7 +27,9 @@
     <%= render "entry_row", entry:, readonly: @presenter.readonly? %>
   <% end %>
 
-  <%= render "entry_row", entry: Entry.new, readonly: @presenter.readonly? %>
+  <% unless @presenter.readonly? %>
+    <%= render "entry_row", entry: Entry.new, readonly: false %>
+  <% end %>
 
   <div class="grid grid-cols-2 gap-4 mt-8">
     <div>
